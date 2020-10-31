@@ -1,0 +1,28 @@
+#!/bin/bash
+
+#This is backup script
+NOWTIME=$(date +"%d-%m-%Y-%H-%M")
+NOWDATE=$(date +"%m-%d-%Y")
+echo Taking backup ON $NOWTIME
+
+mkdir /opt/backup/$NOWDATE
+
+
+mysqldump --user=ss_root --password=s3r0s0ft --routines --events limesurvey > /opt/backup/$NOWDATE/limesurvey-$NOWTIME.sql
+mysqldump --user=ss_root --password=s3r0s0ft --routines --events sis_testing > /opt/backup/$NOWDATE/sis_testing-$NOWTIME.sql
+mysqldump --user=ss_root --password=s3r0s0ft --routines --events sis_testing_audit > /opt/backup/$NOWDATE/sis_testing_audit-$NOWTIME.sql
+#mysqldump --user=prod_root --password=s3r0s0ftprod --routines --events aus_limesurvey > /home/serosoft/sero/backup/Erp_Backup/$NOWDATE/aus_limesurvey-$NOWTIME.sql
+#mysqldump --user=prod_root --password=s3r0s0ftprod --routines --events koha_library > /home/serosoft/sero/backup/Erp_Backup/$NOWDATE/koha_library-$NOWTIME.sql
+#mysqldump --user=prod_root --password=s3r0s0ftprod --routines --events koha_auslibrary > /home/serosoft/sero/backup/Erp_Backup/$NOWDATE/koha_library-$NOWTIME.sql
+
+cd /opt/backup/$NOWDATE
+tar -cf dbbackups-$NOWTIME.tar *$NOWTIME.sql
+gzip dbbackups-$NOWTIME.tar
+rm -rf *$NOWTIME.sql
+
+#Script for v2upload & V1 File & Images
+tar -cvpzf /opt/backup/$NOWDATE/$NOWTIME-v2_upload_mainbackup.tar.gz /opt/serosoft/v2_uploads/main
+#tar -cvpzf /home/serosoft/sero/backup/Erp_Backup/$NOWDATE/$NOWTIME-v1_backup.tar.gz /home/serosoft/sero/installation/v1-tomcat/webapps/academia/files /home/serosoft/sero/installation/v1-tomcat/webapps/academia/images
+~                                                                                                                                             
+~                                                                                                                                             
+~                          
