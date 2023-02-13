@@ -1,0 +1,22 @@
+[tomcat@tomcat project1]$ vim .gitlab-ci.yml
+stages:
+  - build
+  - deploy
+maven-build:
+  stage: build
+  script: "mvn package -B"
+  artifacts:
+    paths:
+      - target/*.war
+Deploy:
+  stage: deploy
+  before_script:
+  - 'command -v ssh-agent >/dev/null || (apk add --update openssh)'
+  - eval$ssh-agent -s)
+  - echo "SSH_PRIVATE_KEY" |tr -d 'r' |ssh-add -
+  - mkdir -p ~/.ssh
+  - chmod 700 ~/.ssh
+  - ssh-keygen $ec2_ipaddress>> ~/.ssh/known_hosts
+  - chmod 644 ~/.ssh/known_hosts
+  script:
+    - scp -o StrictHostKeyChecking=no /homegitlab-runner/builds
