@@ -1,0 +1,14 @@
+echo -n "username"
+read a
+if grep -w $a /etc/passwd > /dev/null
+then
+if [ $? -eq 0 ]
+then
+echo "existi"
+else
+echo "not exist"
+fi
+else
+echo "not exist user"
+fi
+~
